@@ -2,9 +2,6 @@
 <Workspace
    version = "1.0">
    <FileRef
-      location = "group:CardGame/CardGameV2.xcodeproj">
-   </FileRef>
-   <FileRef
       location = "group:IK-Ninja/IK-Ninja.xcodeproj">
    </FileRef>
 </Workspace>
