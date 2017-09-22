@@ -165,7 +165,7 @@ class GameScene: SKScene {
                 if let node = object as? SKSpriteNode {
                     if node.name == "shuriken" {
                         let effectorInNode = self.convert(forNode.position, from: forNode.parent!)  //把待检测节点的位置转换到在其父节点坐标系统中的位置
-                        let n = self.convert(node.frame.origin, from: node.parent)
+                        let n = self.convert(node.frame.origin, from: node.parent!)
                     }
                 }
             }
