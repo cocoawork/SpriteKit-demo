@@ -23,6 +23,8 @@
 import GameplayKit
 
 class Player: NSObject, GKGameModelPlayer {
+    var playerId: Int
+
   
   enum Value: Int {
     case empty
@@ -62,6 +64,9 @@ class Player: NSObject, GKGameModelPlayer {
   init(_ value: Value) {
     self.value = value
     name = value.name
+    playerId = value.rawValue
   }
   
 }
+
+

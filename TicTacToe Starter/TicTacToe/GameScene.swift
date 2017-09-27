@@ -26,6 +26,8 @@ import GameplayKit
 class GameScene: SKScene {
   
   // MARK: - Properties
+
+  var strategist: Strategist!
   
   var boardNode: SKSpriteNode!
   var informationLabel: SKLabelNode!
@@ -67,7 +69,9 @@ class GameScene: SKScene {
     informationLabel.position = headerNode.position
     informationLabel.verticalAlignmentMode = .center
     addChild(informationLabel)
-    
+
+    strategist = Strategist(board: board)
+
     resetGame()
     updateGame()
   }
@@ -87,6 +91,7 @@ class GameScene: SKScene {
     gamePieceNodes.removeAll()
     
     board = Board()
+    strategist.board = board
   }
   
   fileprivate func updateGame() {
@@ -107,7 +112,9 @@ class GameScene: SKScene {
       
       alert.addAction(alertAction)
       view?.window?.rootViewController?.present(alert, animated: true)
-      
+      if board.currentPlayer.value == .brain {
+        processAIMove()
+      }
       return
     }
     
@@ -202,6 +209,9 @@ class GameScene: SKScene {
   }
     
   fileprivate func handleTouchEnd(_ touches: Set<UITouch>, with event: UIEvent?) {
+    guard board.currentPlayer.value == .zombie else {
+      return
+    }
     for touch in touches {
       for node in nodes(at: touch.location(in: self)) {
         if node == boardNode {
@@ -222,5 +232,29 @@ class GameScene: SKScene {
     
     handleTouchEnd(touches, with: event)
   }
+
+
+  fileprivate func processAIMove() {
+    // 1
+    DispatchQueue.global().async { [unowned self] in
+      // 2
+      let strategistTime = CFAbsoluteTimeGetCurrent()
+      guard let bestCoordinate = self.strategist.bestCoordinate else {
+        return
+      }
+      // 3
+      let delta = CFAbsoluteTimeGetCurrent() - strategistTime
+
+      let aiTimeCeiling = 0.75
+      // 4
+      let delay = max(delta, aiTimeCeiling)
+
+      // 5
+      DispatchQueue.main.asyncAfter(deadline: .now() + delay) {
+        self.updateBoard(with: Int(bestCoordinate.x), y: Int(bestCoordinate.y))
+      }
+    }
+  }
+
   
 }

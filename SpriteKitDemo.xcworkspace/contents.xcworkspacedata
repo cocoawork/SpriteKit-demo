@@ -2,6 +2,9 @@
 <Workspace
    version = "1.0">
    <FileRef
+      location = "group:MonsterWars-Starter/MonsterWars.xcodeproj">
+   </FileRef>
+   <FileRef
       location = "group:TicTacToe Starter/TicTacToe.xcodeproj">
    </FileRef>
    <FileRef

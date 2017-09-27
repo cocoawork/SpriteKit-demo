@@ -113,3 +113,82 @@ class Board: NSObject {
   }
   
 }
+
+
+extension Board: GKGameModel {
+  func gameModelUpdates(for player: GKGameModelPlayer) -> [GKGameModelUpdate]? {
+    guard let player = player as? Player else {
+      return nil
+    }
+    if isWin(for: player) {
+      return nil
+    }
+
+    var moves = [Move]()
+    for x in 0..<values.count {
+      for y in 0..<values[x].count {
+        let position = CGPoint(x: x, y: y)
+        if canMove(at: position) {
+          moves.append(Move(position))
+        }
+      }
+    }
+    return moves as [GKGameModelUpdate]
+  }
+
+  func apply(_ gameModelUpdate: GKGameModelUpdate) {
+    guard let move = gameModelUpdate as? Move else {
+      return
+    }
+    self[Int(move.coordinate.x), Int(move.coordinate.y)] = currentPlayer.value
+    currentPlayer = currentPlayer.opponent
+  }
+
+
+
+  func copy(with zone: NSZone? = nil) -> Any {
+    let copy = Board()
+    copy.setGameModel(self)
+    return copy
+  }
+
+  var players: [GKGameModelPlayer]? {
+    return Player.allPlayers
+  }
+
+  var activePlayer: GKGameModelPlayer? {
+    return currentPlayer
+  }
+
+  func setGameModel(_ gameModel: GKGameModel) {
+    if let board = gameModel as? Board {
+      values = board.values
+    }
+  }
+
+  func isWin(for player: GKGameModelPlayer) -> Bool {
+    guard let player = player as? Player else {
+      return false
+    }
+    if let winner = winningPlayer {
+      return player == winner
+    }else {
+      return false
+    }
+  }
+
+  func score(for player: GKGameModelPlayer) -> Int {
+    guard let player = player as? Player else {
+      return Move.Score.none.rawValue
+    }
+
+    if isWin(for: player) {
+      return Move.Score.win.rawValue
+    }else {
+      return Move.Score.none.rawValue
+    }
+  }
+
+}
+
+
