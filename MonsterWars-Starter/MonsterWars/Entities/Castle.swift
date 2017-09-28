@@ -13,10 +13,16 @@ import GameplayKit
 class Castle: GKEntity {
 
 
-    init(imageNamed: String) {
+    init(imageNamed: String, team: Team) {
         super.init()
         let spriteComponent = SpriteComponent(texture: SKTexture(imageNamed: imageNamed))
         self.addComponent(spriteComponent)
+
+        let teamComponent = TeamComponent(team: team)
+        self.addComponent(teamComponent)
+
+        let castleComponent = CastleComponent()
+        self.addComponent(castleComponent)
     }
 
     required init?(coder aDecoder: NSCoder) {

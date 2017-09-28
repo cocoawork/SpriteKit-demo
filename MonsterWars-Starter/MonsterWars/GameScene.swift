@@ -102,21 +102,27 @@ class GameScene: SKScene {
 
 
     entityManager = EntityManager(sence: self)
-    let humanCastle = Castle(imageNamed: "castle1_atk")
+
+
+    let humanCastle = Castle(imageNamed: "castle1_atk", team: .team1)
     if let component = humanCastle.component(ofType: SpriteComponent.self) {
         component.node.position = CGPoint(x: component.node.size.width / 2, y: size.height / 2)
     }
     entityManager.addEntity(humanCastle)
 
-    let aiCastle = Castle(imageNamed: "castle2_atk")
+    let aiCastle = Castle(imageNamed: "castle2_atk", team: .team2)
     if let spriteComponent = aiCastle.component(ofType: SpriteComponent.self) {
         spriteComponent.node.position = CGPoint(x: size.width - spriteComponent.node.size.width/2, y: size.height/2)
     }
     entityManager.addEntity(aiCastle)
+
+
+
   }
   
   func quirkPressed() {
-    print("Quirk pressed!")    
+    print("Quirk pressed!")
+    entityManager.addQurik(forTeam: .team1)
   }
   
   func zapPressed() {
@@ -169,10 +175,23 @@ class GameScene: SKScene {
   }
   
  
-  override func update(_ currentTime: TimeInterval) {
-    if gameOver {
-      return
+    override func update(_ currentTime: TimeInterval) {
+        if gameOver {
+            return
+        }
+        let deltaTime = CACurrentMediaTime() - lastUpdateTimeInterval
+        lastUpdateTimeInterval = CACurrentMediaTime()
+        entityManager.update(deltaTime)
+        if let human = entityManager.castle(for: .team1) ,
+            let humanCastle = human.component(ofType: CastleComponent.self) {
+            coin1Label.text = "\(humanCastle.coins)"
+        }
+
+        if let human = entityManager.castle(for: .team2),
+            let humanCastle = human.component(ofType: CastleComponent.self) {
+            coin2Label.text = "\(humanCastle.coins)"
+
+        }
+
     }
-    
-  }
 }

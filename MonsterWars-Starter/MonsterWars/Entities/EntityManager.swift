@@ -12,6 +12,11 @@ import GameplayKit
 class EntityManager {
     var entities = Set<GKEntity>()
     var sence: SKScene!
+    var toRemove = Set<GKEntity>()
+    lazy var componentSystems: [GKComponentSystem] = {
+        let castleSystem = GKComponentSystem(componentClass: CastleComponent.self)
+        return [castleSystem]
+    }()
 
     init(sence: SKScene) {
         self.sence = sence
@@ -22,6 +27,9 @@ class EntityManager {
         if let node = entity.component(ofType: SpriteComponent.self)?.node {
             sence.addChild(node)
         }
+        for sys in componentSystems {
+            sys.addComponent(foundIn: entity)
+        }
     }
 
     func removeEntity(_ entity: GKEntity) {
@@ -29,7 +37,57 @@ class EntityManager {
             node.removeFromParent()
         }
         entities.remove(entity)
+        toRemove.insert(entity)
     }
 
+    func update(_ deltaTime: CFTimeInterval) {
+        // 1
+        for componentSystem in componentSystems {
+            componentSystem.update(deltaTime: deltaTime)
+        }
+
+        // 2
+        for currentRemove in toRemove {
+            for componentSystem in componentSystems {
+                componentSystem.removeComponent(foundIn: currentRemove)
+            }
+        }
+        toRemove.removeAll()
+    }
+
+    func castle(for team: Team) -> GKEntity? {
+        for entity in entities {
+            if let component = entity.component(ofType: TeamComponent.self),
+                let _ = entity.component(ofType: CastleComponent.self) {
+                if component.team == team {
+                    return entity
+                }
+            }
+        }
+        return nil
+    }
+
+    func addQurik(forTeam team: Team) {
+        if let teamEntity = castle(for: team) {
+            guard let teamCastleComponent = teamEntity.component(ofType: CastleComponent.self),
+                let teamSpriteComponent = teamEntity.component(ofType: SpriteComponent.self) else { return }
+
+
+            if teamCastleComponent.coins < costQuirk {
+                return
+            }
+
+            teamCastleComponent.coins -= costQuirk
+            sence.run(SoundManager.sharedInstance.soundSpawn)
+
+            let monster = Quirk(team: team)
+            if let spriteComponent = monster.component(ofType: SpriteComponent.self) {
+                spriteComponent.node.position = CGPoint(x: spriteComponent.node.size.width / 2, y: CGFloat.random(min: sence.size.height * 0.3, max: sence.size.height * 0.6))
+                spriteComponent.node.zPosition = 2
+            }
+            addEntity(monster)
+
+        }
+    }
 
 }
