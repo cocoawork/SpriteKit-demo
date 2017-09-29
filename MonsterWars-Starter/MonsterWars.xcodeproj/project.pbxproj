@@ -35,6 +35,8 @@
 		D21AD64B1F7BA393008A3A5E /* TeamComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = D21AD64A1F7BA393008A3A5E /* TeamComponent.swift */; };
 		D21AD64D1F7C9556008A3A5E /* CastleComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = D21AD64C1F7C9556008A3A5E /* CastleComponent.swift */; };
 		D21AD64F1F7CF266008A3A5E /* Quirk.swift in Sources */ = {isa = PBXBuildFile; fileRef = D21AD64E1F7CF266008A3A5E /* Quirk.swift */; };
+		D21AD6511F7DDC69008A3A5E /* MoveBehavior.swift in Sources */ = {isa = PBXBuildFile; fileRef = D21AD6501F7DDC69008A3A5E /* MoveBehavior.swift */; };
+		D21AD6531F7DDE54008A3A5E /* MoveComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = D21AD6521F7DDE54008A3A5E /* MoveComponent.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -68,6 +70,8 @@
 		D21AD64A1F7BA393008A3A5E /* TeamComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TeamComponent.swift; sourceTree = "<group>"; };
 		D21AD64C1F7C9556008A3A5E /* CastleComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CastleComponent.swift; sourceTree = "<group>"; };
 		D21AD64E1F7CF266008A3A5E /* Quirk.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Quirk.swift; sourceTree = "<group>"; };
+		D21AD6501F7DDC69008A3A5E /* MoveBehavior.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoveBehavior.swift; sourceTree = "<group>"; };
+		D21AD6521F7DDE54008A3A5E /* MoveComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoveComponent.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -150,6 +154,8 @@
 			children = (
 				D21AD6431F7B97E7008A3A5E /* SpriteComponent.swift */,
 				D21AD64C1F7C9556008A3A5E /* CastleComponent.swift */,
+				D21AD6501F7DDC69008A3A5E /* MoveBehavior.swift */,
+				D21AD6521F7DDE54008A3A5E /* MoveComponent.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -252,6 +258,7 @@
 			files = (
 				D21AD6491F7B9C27008A3A5E /* EntityManager.swift in Sources */,
 				D21AD64B1F7BA393008A3A5E /* TeamComponent.swift in Sources */,
+				D21AD6511F7DDC69008A3A5E /* MoveBehavior.swift in Sources */,
 				352F99AB1BE95410001D1D3E /* SoundManager.swift in Sources */,
 				352F995F1BE91323001D1D3E /* GameScene.swift in Sources */,
 				D21AD6441F7B97E7008A3A5E /* SpriteComponent.swift in Sources */,
@@ -260,6 +267,7 @@
 				D21AD64D1F7C9556008A3A5E /* CastleComponent.swift in Sources */,
 				D21AD64F1F7CF266008A3A5E /* Quirk.swift in Sources */,
 				352F99611BE91323001D1D3E /* GameViewController.swift in Sources */,
+				D21AD6531F7DDE54008A3A5E /* MoveComponent.swift in Sources */,
 				D21AD6471F7B9AA5008A3A5E /* Castle.swift in Sources */,
 				352F99B31BE97B48001D1D3E /* Constants.swift in Sources */,
 				352F995B1BE91323001D1D3E /* AppDelegate.swift in Sources */,

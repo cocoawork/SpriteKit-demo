@@ -90,4 +90,28 @@ class EntityManager {
         }
     }
 
+
+    func entities(forTeam team: Team) -> [GKEntity] {
+        return entities.flatMap({ entity in
+            if let teamComponent = entity.component(ofType: TeamComponent.self) {
+                if teamComponent.team == team {
+                    return entity
+                }
+            }
+            return nil
+        })
+    }
+
+
+    func moveComponent(forTeam team: Team) -> [MoveComponent] {
+        let entityToMove = entities(forTeam: team)
+        var moveComponents = [MoveComponent]()
+        for entity in entityToMove {
+            if let moveComponent = entity.component(ofType: MoveComponent.self) {
+                moveComponents.append(moveComponent)
+            }
+        }
+        return moveComponents
+    }
+
 }
