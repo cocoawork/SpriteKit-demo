@@ -2,6 +2,9 @@
 <Workspace
    version = "1.0">
    <FileRef
+      location = "group:Fear-The-Dead/Fear-The-Dead.xcodeproj">
+   </FileRef>
+   <FileRef
       location = "group:PlayPlain/PlayPlain.xcodeproj">
    </FileRef>
    <FileRef

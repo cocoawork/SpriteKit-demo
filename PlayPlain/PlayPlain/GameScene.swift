@@ -30,11 +30,12 @@ class GameScene: SKScene {
         let texture = SKTexture(imageNamed: "player")
         self.player = PlayerNode(texture: texture, color: UIColor.white, size: CGSize(width: 90, height: 100))
         player.position = CGPoint(x: size.width / 2, y: size.height / 3)
-        player.zPosition = 2
+        player.zPosition = 5
         self.physicsBody = SKPhysicsBody(rectangleOf: player.size)
         self.physicsBody?.isDynamic = true
         self.physicsBody?.categoryBitMask = 3
         self.physicsBody?.contactTestBitMask = 4
+        player.name = "player"
         self.addChild(player)
     }
 
@@ -48,6 +49,11 @@ class GameScene: SKScene {
             let x = (size.width - 240 ) / 2
             m.position = CGPoint(x: CGFloat(Int(x)  + 30 * idx), y: size.height / 3 * 2)
             m.zPosition = 2
+            m.name = "minion"
+            m.physicsBody = SKPhysicsBody(rectangleOf: m.size)
+            m.physicsBody?.isDynamic = true
+            m.physicsBody?.categoryBitMask = 2
+            m.physicsBody?.contactTestBitMask = 1
             self.addChild(m)
         }
     }
@@ -62,6 +68,7 @@ class GameScene: SKScene {
         bullet.physicsBody?.contactTestBitMask = 2
         bullet.run(SKAction.sequence([SKAction.moveBy(x: 0, y: UIScreen.main.bounds.size.height, duration: 1.8), SKAction.removeFromParent()]))
         bullet.zPosition = 2
+        bullet.name = "playerShotBullet"
         self.addChild(bullet)
     }
 
@@ -75,11 +82,12 @@ class GameScene: SKScene {
                     let bullet = SKSpriteNode(color: UIColor.groupTableViewBackground, size: CGSize(width: 3, height: 3))
                     bullet.position = node.position
                     bullet.run(SKAction.sequence([SKAction.moveBy(x: 0, y: -UIScreen.main.bounds.size.height, duration: 2.5), SKAction.removeFromParent()]))
-                    bullet.zPosition = 2
+                    bullet.zPosition = 5
                     bullet.physicsBody = SKPhysicsBody(rectangleOf: bullet.size)
                     bullet.physicsBody?.isDynamic = true
                     bullet.physicsBody?.categoryBitMask = 4
                     bullet.physicsBody?.contactTestBitMask = 3
+                    bullet.name = "minionShotBullet"
                     self.addChild(bullet)
                 }
             }
@@ -137,17 +145,16 @@ class GameScene: SKScene {
 extension GameScene: SKPhysicsContactDelegate {
     func didBegin(_ contact: SKPhysicsContact){
 
-        print("\(contact.bodyA.node) || \(contact.bodyB.node)")
         if (contact.bodyA.node?.physicsBody?.categoryBitMask == 2 && contact.bodyB.node?.physicsBody?.categoryBitMask == 1) {
             self.run(SoundManager.shareInstance.hitMusic)
             contact.bodyA.node?.run(SKAction.removeFromParent())
             contact.bodyB.node?.run(SKAction.removeFromParent())
         }
 
-        if (contact.bodyA.node?.physicsBody?.categoryBitMask == 3 && contact.bodyB.node?.physicsBody?.categoryBitMask == 4) {
+        print("bodyA = \(contact.bodyA.node?.name) || bodyB = \(contact.bodyB.node?.name)")
+
+        if ([UInt32(3), UInt32(4)].contains((contact.bodyA.node?.physicsBody?.categoryBitMask)!) && [UInt32(3), UInt32(4)].contains((contact.bodyB.node?.physicsBody?.categoryBitMask)!) ){
             self.run(SoundManager.shareInstance.hitMusic)
-//            contact.bodyA.node?.run(SKAction.removeFromParent())
-            contact.bodyB.node?.run(SKAction.removeFromParent())
         }
     }
 }
